@@ -13,14 +13,14 @@ namespace Cosmos.System.Graphics
     public abstract class Canvas
     {
         protected Mode mode;
-        protected List<Mode> aviableModes;
+        protected List<Mode> availableModes;
         static protected Mode defaultGraphicMode;
 
         protected Canvas(Mode mode)
         {
             //Global.mDebugger.SendInternal($"Creating a new Canvas with Mode ${mode}");
 
-            aviableModes = getAviableModes();
+            availableModes = getAvailableModes();
             defaultGraphicMode = getDefaultGraphicMode();
             this.mode = mode;
         }
@@ -29,20 +29,20 @@ namespace Cosmos.System.Graphics
         {
             Global.mDebugger.SendInternal($"Creating a new Canvas with default graphic Mode");
 
-            aviableModes = getAviableModes();
+            availableModes = getAvailableModes();
             defaultGraphicMode = getDefaultGraphicMode();
             this.mode = defaultGraphicMode;
         }
 
-        abstract public List<Mode> getAviableModes();
+        abstract public List<Mode> getAvailableModes();
 
         abstract protected Mode getDefaultGraphicMode();
 
-        public List<Mode> AviableModes
+        public List<Mode> AvailableModes
         {
             get
             {
-                return aviableModes;
+                return availableModes;
             }
         }
 
@@ -344,15 +344,16 @@ namespace Cosmos.System.Graphics
             throw new NotImplementedException();
         }
 
-        public void DrawImage(Image image, int x, int y)
-        {
-            throw new NotImplementedException();
-        }
+        // Image and Font aren't implemented in .NET Core
+        //public void DrawImage(Image image, int x, int y)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public void DrawString(String str, Font aFont, Brush brush, int x, int y)
-        {
-            throw new NotImplementedException();
-        }
+        //public void DrawString(String str, Font aFont, Brush brush, int x, int y)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         protected bool CheckIfModeIsValid(Mode mode)
         {
@@ -361,11 +362,11 @@ namespace Cosmos.System.Graphics
             if (mode == null)
                 return false;
 
-            foreach (var elem in aviableModes)
+            foreach (var elem in availableModes)
             {
                 if (elem == mode)
                 {
-                    return true; // All OK mode does exists in aviableModes
+                    return true; // All OK mode does exists in availableModes
                 }
             }
 
@@ -381,21 +382,21 @@ namespace Cosmos.System.Graphics
             }
 #if false
             /* This would have been the more "modern" version but LINQ is not working */
-            if (!aviableModes.Exists(element => element == mode))
+            if (!availableModes.Exists(element => element == mode))
                 throw new ArgumentOutOfRangeException($"Mode {mode} is not supported by this Driver");
 #endif
 
-            foreach (var elem in aviableModes)
+            foreach (var elem in availableModes)
             {
                 if (elem == mode)
                 {
                     Global.mDebugger.SendInternal($"mode {mode} found");
-                    return; // All OK mode does exists in aviableModes
+                    return; // All OK mode does exists in availableModes
                 }
             }
 
             Global.mDebugger.SendInternal($"foreach ended mode is not found! Raising exception...");
-            /* 'mode' was not in the 'aviableModes' List ==> 'mode' in NOT Valid */
+            /* 'mode' was not in the 'availableModes' List ==> 'mode' in NOT Valid */
             throw new ArgumentOutOfRangeException(nameof(mode), $"Mode {mode} is not supported by this Driver");
         }
 

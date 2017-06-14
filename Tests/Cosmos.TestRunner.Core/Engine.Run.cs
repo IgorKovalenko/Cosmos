@@ -1,14 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Cosmos.Build.Common;
-using Cosmos.Build.MSBuild;
-using Cosmos.Core.Plugs;
-using Cosmos.Debug.Kernel;
-using Cosmos.Debug.Kernel.Plugs;
-using Cosmos.System.Plugs.System;
-using IL2CPU;
-using Microsoft.Win32;
 
 namespace Cosmos.TestRunner.Core
 {
@@ -23,7 +15,6 @@ namespace Cosmos.TestRunner.Core
             OutputHandler.ExecuteKernelStart(assemblyFileName);
             try
             {
-
                 var xAssemblyFile = Path.Combine(mBaseWorkingDirectory, "Kernel.asm");
                 var xObjectFile = Path.Combine(mBaseWorkingDirectory, "Kernel.obj");
                 var xTempObjectFile = Path.Combine(mBaseWorkingDirectory, "Kernel.o");

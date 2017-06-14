@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 
 namespace Cosmos.Build.Common
 {
@@ -12,7 +12,9 @@ namespace Cosmos.Build.Common
 
         static BuildProperties()
         {
-            foreach (var xField in typeof(BuildPropertyNames).GetFields())
+            var xFields = typeof(BuildPropertyNames).GetRuntimeFields();
+
+            foreach (var xField in xFields)
             {
                 // IsLiteral determines if its value is written at compile time and not changeable.
                 // Consts are static even if we dont use static keyword.

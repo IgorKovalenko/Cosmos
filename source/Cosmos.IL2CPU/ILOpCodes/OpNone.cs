@@ -1,16 +1,16 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Metadata;
 
-using SysReflection = System.Reflection;
 
 namespace Cosmos.IL2CPU.ILOpCodes
 {
   public class OpNone : ILOpCode
   {
 
-    public OpNone(Code aOpCode, int aPos, int aNextPos, ExceptionHandlingClause aCurrentExceptionHandler)
-      : base(aOpCode, aPos, aNextPos, aCurrentExceptionHandler)
+    public OpNone(Code aOpCode, int aPos, int aNextPos, _ExceptionRegionInfo aCurrentExceptionRegion)
+      : base(aOpCode, aPos, aNextPos, aCurrentExceptionRegion)
     {
     }
 
@@ -23,7 +23,7 @@ namespace Cosmos.IL2CPU.ILOpCodes
         case Code.Nop:
           return 0;
         case Code.Ret:
-          var methodInfo = aMethod as SysReflection.MethodInfo;
+          var methodInfo = aMethod as MethodInfo;
           if (methodInfo != null && methodInfo.ReturnType != typeof(void))
           {
             return 1;
@@ -109,6 +109,8 @@ namespace Cosmos.IL2CPU.ILOpCodes
           return 2;
         case Code.Throw:
           return 1;
+        case Code.Rethrow:
+          return 0;
         case Code.Or:
         case Code.And:
           return 2;
@@ -243,6 +245,7 @@ namespace Cosmos.IL2CPU.ILOpCodes
         case Code.Ceq:
           return 1;
         case Code.Throw:
+        case Code.Rethrow:
           return 0;
         case Code.Or:
         case Code.And:
@@ -963,11 +966,11 @@ namespace Cosmos.IL2CPU.ILOpCodes
           {
             return;
           }
-          if (!IsIntegralType(StackPopTypes[0]))
+          if (!ILOp.IsIntegralType(StackPopTypes[0]))
           {
             throw new Exception("Wrong value type: " + StackPopTypes[0].FullName);
           }
-          if (!IsPointer(StackPopTypes[1]))
+          if (!ILOp.IsPointer(StackPopTypes[1]))
           {
             throw new Exception("Wrong Pointer type: " + StackPopTypes[1].FullName);
           }
@@ -977,11 +980,11 @@ namespace Cosmos.IL2CPU.ILOpCodes
           {
             return;
           }
-          if (!IsIntegralType(StackPopTypes[0]))
+          if (!ILOp.IsIntegralType(StackPopTypes[0]))
           {
             throw new Exception("Wrong value type: " + StackPopTypes[0].FullName);
           }
-          if (!IsPointer(StackPopTypes[1]))
+          if (!ILOp.IsPointer(StackPopTypes[1]))
           {
             throw new Exception("Wrong Pointer type: " + StackPopTypes[1].FullName);
           }
@@ -991,11 +994,11 @@ namespace Cosmos.IL2CPU.ILOpCodes
           {
             return;
           }
-          if (!IsIntegralType(StackPopTypes[0]))
+          if (!ILOp.IsIntegralType(StackPopTypes[0]))
           {
             throw new Exception("Wrong value type: " + StackPopTypes[0].FullName);
           }
-          if (!IsPointer(StackPopTypes[1]))
+          if (!ILOp.IsPointer(StackPopTypes[1]))
           {
             throw new Exception("Wrong Pointer type: " + StackPopTypes[1].FullName);
           }
@@ -1005,11 +1008,11 @@ namespace Cosmos.IL2CPU.ILOpCodes
           {
             return;
           }
-          if (!IsIntegralType(StackPopTypes[0]))
+          if (!ILOp.IsIntegralType(StackPopTypes[0]))
           {
             throw new Exception("Wrong value type: " + StackPopTypes[0].FullName);
           }
-          if (!IsPointer(StackPopTypes[1]))
+          if (!ILOp.IsPointer(StackPopTypes[1]))
           {
             throw new Exception("Wrong Pointer type: " + StackPopTypes[1].FullName);
           }
@@ -1019,11 +1022,11 @@ namespace Cosmos.IL2CPU.ILOpCodes
           {
             return;
           }
-          if (!IsIntegralTypeOrPointer(StackPopTypes[0]))
+          if (!ILOp.IsIntegralTypeOrPointer(StackPopTypes[0]))
           {
             throw new Exception("Wrong value type: " + StackPopTypes[0].FullName);
           }
-          if (!IsPointer(StackPopTypes[1]))
+          if (!ILOp.IsPointer(StackPopTypes[1]))
           {
             throw new Exception("Wrong Pointer type: " + StackPopTypes[1].FullName);
           }
